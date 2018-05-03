@@ -1,15 +1,19 @@
-
-@import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed');
+:root {
+	--primary-color: #0469E5;
+	--dark-color: #141E36;
+	--text-color: rgba(0,0,0,0.8);
+	--navbar-heigth: 3.5em;
+}
 
 html, body {
 	height: 100%;
 	width: 100%;
 	padding: 0;
 	margin: 0;
-	background: #FAFAFA;
-	font-family: 'Roboto', arial, sans-serif;
+	background: #f6f6f6;
+	font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
 	font-weight: 400;
-	color: #141E36;
+	color: var(--text-color);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -17,6 +21,7 @@ html, body {
 * {
 	box-sizing: border-box;
 }
+
 
 #app {
 	height: 100%;

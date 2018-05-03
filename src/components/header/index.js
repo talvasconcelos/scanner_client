@@ -1,40 +1,59 @@
 import { h, Component } from 'preact'
 import { Link } from 'preact-router/match'
-import styled from 'styled-components'
-import style, { css } from './style'
+import styled, { css } from 'styled-components'
+//import style from './style'
 
-const Tab = styled.ul`
-	margin: 0;
-	padding: 0;
-	list-style: none;
+const Tabs = styled.header`
+	position: fixed;
+	left: 0;
+	top: 0;
 	width: 100%;
-	display: table;
+	height: var(--navbar-height);
+	padding: 0;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	z-index: 50;
 `
 
-const TabItem = styled.li`
-	display: table-cell;
-	height: 56px;
-	background: pink;
-	border-bottom: ${props => props.active ? '2px solid black' : '2px solid pink'};
+const Nav = styled.nav`
+	display: flex;
+	justify-content: space-around;
+	background: #FFF;
+`
+
+const S_Link = styled(Link)`
+	display: inline-block;
+	padding: 0 1em;
+	line-height: var(--navbar-heigth);
+	width: 100%;
+	text-align: center;
+	background: rgba(255,255,255,0);
+	text-decoration: none;
+	font-weight: bold;
+	color: var(--text-color);
+	border-bottom: 2px solid #FFF;
+	will-change: border-bottom;
+	&:hover,
+	&.activeTab {
+		border-bottom: 2px solid var(--primary-color);
+	}
 `
 
 export default class Header extends Component {
-	render() {
+	render({count, tabs}) {
 		return (
-			<Tab>
-				<TabItem active>BTC</TabItem>
-				<TabItem>ETH</TabItem>
-				<TabItem>BNB</TabItem>
-				<TabItem>USDT</TabItem>
-			</Tab>
-			// <header class={style.header}>
-			// 	<h1>Preact App</h1>
-			// 	<nav>
-			// 		<Link activeClassName={style.active} href="/">Home</Link>
-			// 		<Link activeClassName={style.active} href="/profile">Me</Link>
-			// 		<Link activeClassName={style.active} href="/profile/john">John</Link>
-			// 	</nav>
-			// </header>
+			<Tabs>
+				<Nav>
+					{tabs.map((cur, i) => {
+						let l = count[i]
+						return(
+							<S_Link activeClassName='activeTab' href={`/currency/${cur.toLowerCase()}`}>
+								{cur}
+								<span>{` ${l}`}</span>
+							</S_Link>
+						)
+					})}
+				</Nav>
+			</Tabs>
 		);
 	}
 }
