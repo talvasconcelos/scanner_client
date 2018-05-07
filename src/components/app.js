@@ -4,74 +4,10 @@ import Sockette from 'sockette'
 
 const WSURI = 'wss://market-scanner.herokuapp.com'
 
-const cacheState = [ { pair: 'DGDBTC',
-    close: '0.04843100',
-    ema: 0.048435154,
-    vol: 0,
-    roc: 7.2645124,
-    rsi: 57,
-    ai: 0.6053151710277989,
-    gap: -0.000004 },
-  { pair: 'RCNBTC',
-    close: '0.00001291',
-    ema: 0.000012922299,
-    vol: 1,
-    roc: 7.6730609,
-    rsi: 57,
-    ai: 0.5113807948927858,
-    gap: -0 },
-		{ pair: 'ADXBNB',
-	    close: '0.07784000',
-	    ema: 0.077941372,
-	    vol: 1,
-	    roc: 4.8915241,
-	    rsi: 40,
-	    ai: 0.8200922874577424,
-	    gap: -0.000101 },
-	  { pair: 'GTOBNB',
-	    close: '0.02801000',
-	    ema: 0.027445189,
-	    vol: 0,
-	    roc: 7.1947953,
-	    rsi: 53,
-	    ai: 0.6847159678857256,
-	    gap: 0.000565 },
-      { pair: 'DGDBTC',
-          close: '0.04843100',
-          ema: 0.048435154,
-          vol: 0,
-          roc: 7.2645124,
-          rsi: 57,
-          ai: 0.6053151710277989,
-          gap: -0.000004 },
-        { pair: 'RCNBTC',
-          close: '0.00001291',
-          ema: 0.000012922299,
-          vol: 1,
-          roc: 7.6730609,
-          rsi: 57,
-          ai: 0.5113807948927858,
-          gap: -0 },
-      		{ pair: 'ADXBNB',
-      	    close: '0.07784000',
-      	    ema: 0.077941372,
-      	    vol: 1,
-      	    roc: 4.8915241,
-      	    rsi: 40,
-      	    ai: 0.8200922874577424,
-      	    gap: -0.000101 },
-      	  { pair: 'GTOBNB',
-      	    close: '0.02801000',
-      	    ema: 0.027445189,
-      	    vol: 0,
-      	    roc: 7.1947953,
-      	    rsi: 53,
-      	    ai: 0.6847159678857256,
-      	    gap: 0.000565 } ]
-
 import Header from './header'
+import Footer from './footer'
 import Home from '../routes/home'
-import Profile from '../routes/profile'
+import Currency from '../routes/currency'
 // import Home from 'async!../routes/home';
 // import Profile from 'async!../routes/profile';
 
@@ -115,7 +51,7 @@ export default class App extends Component {
 		if(Array.isArray(pairs)){
 			this.setState({
 				isPairs: true,
-        history: [...this.state.history, ...this.state.pairs],
+        history: [...this.state.pairs, ...this.state.history],
 				pairs: this.separatePairs(pairs)
 			})
 		}
@@ -149,7 +85,7 @@ export default class App extends Component {
 
 	componentDidMount() {
 		this.startWS()
-		this.pairsUpdate(cacheState)
+		//this.pairsUpdate(cacheState)
 	}
 
 	render({}, {isPairs, pairs, currency}) {
@@ -158,8 +94,10 @@ export default class App extends Component {
 			<div id="app">
 				<Header tabs={currency} count={count} />
 				<Router onChange={this.handleRoute}>
-					<Profile path="/currency/:curr" pairs={pairs} />
+          <Home path='/'/>
+					<Currency path="/currency/:curr" pairs={pairs} />
 				</Router>
+				<Footer />
 			</div>
 		)
 	}

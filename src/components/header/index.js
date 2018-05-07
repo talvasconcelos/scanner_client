@@ -32,9 +32,11 @@ const S_Link = styled(Link)`
 	color: var(--text-color);
 	border-bottom: 2px solid #FFF;
 	will-change: border-bottom;
+	transition: all 0.25s ease;
 	&:hover,
 	&.activeTab {
 		border-bottom: 2px solid var(--primary-color);
+
 	}
 `
 

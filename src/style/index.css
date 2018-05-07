@@ -1,6 +1,7 @@
 :root {
 	--primary-color: #0469E5;
 	--dark-color: #141E36;
+	--light-color: #edf1f8;
 	--text-color: rgba(0,0,0,0.8);
 	--navbar-heigth: 3.5em;
 }
