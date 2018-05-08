@@ -1,30 +1,15 @@
 import { h, Component } from 'preact'
 import styled from 'styled-components'
 
-import home_icon from './home.svg'
-
 const Wrapper = styled.div`
 	width: 95%;
 	max-width: 960px;
-	margin-bottom: calc(var(--navbar-heigth) * 2);
 	margin-left: auto;
 	margin-right: auto;
 	padding-top: calc(var(--navbar-heigth) + 1em);
+	min-height: 100%;
 `
 
-const HomeButton = styled.a`
-	position: fixed;
-	bottom: calc(var(--navbar-heigth) / 2);
-	padding: 0.75em;
-	border-radius: 50%;
-	background: var(--primary-color);
-	box-shadow: 0 0.3em 1em 0.15em rgba(0,0,0,0.08);
-`
-
-const Icon = styled.img`
-	height: 2em;
-	width: auto;
-`
 //margin-top: calc(var(--navbar-heigth) + 0.5em);
 
 import Item from '../../components/Item'
@@ -40,9 +25,6 @@ const Currency = ({curr, pairs}) => {
 				let data = cur.frontEnd.map(c => c.close)
 				return (<Item pair={cur} url={url} name={name} sparkData={data}></Item>)
 			})}
-			<HomeButton href='/'>
-				<Icon src={home_icon} />
-			</HomeButton>
 		</Wrapper>
 	)
 }

@@ -12,7 +12,7 @@ const Block = styled.div`
   }
 
   @media screen and (min-width: 768px) {
-    column-count: 2
+    column-count: ${props => props.columns || 1}
     column-gap: 3em;
     & h2{
       column-span: all;
@@ -20,9 +20,9 @@ const Block = styled.div`
 	}
 `
 
-const Blurb = ({children, title}) => {
+const Blurb = ({children, columns, title}) => {
   return (
-    <Block>
+    <Block columns={columns}>
       <h2>{title}</h2>
       {children}
     </Block>

@@ -1,28 +1,48 @@
+import { Link } from 'preact-router/match'
 import styled from 'styled-components'
 
 const Wrapper = styled.footer`
-  left: 0;
-  bottom: 0;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  margin-top: 5em;
   width: 100%;
-  height: 300px;
-  background: red;
+  padding: 1em;
+  background: var(--dark-color);
+  color: #fff;
+  text-align: center;
 `
 
-const Phantom = styled.div`
-  display: block;
-  padding: 20px;
-  height: 60px;
-  width: 100;
+const List = styled.ul`
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  & li {
+    display: inline-block;
+    margin: 0.5em;
+  }
+`
+
+const SLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
 `
 
 
 const Footer = ({children, title}) => {
   return (
-    <div>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, mollitia! Ut, esse aut! Assumenda quasi accusamus nobis, dolorum error vero provident, reiciendis debitis mollitia ullam explicabo repellat eaque quibusdam quod minima illo voluptatem aliquid. Illo quas, eligendi nobis. Sint odio reprehenderit eius impedit autem blanditiis ipsum ullam facilis ex placeat, optio doloremque non quas ipsam, veniam velit quidem officiis fuga quod quasi. Ullam quis ab odio pariatur ratione incidunt quos, ipsa. Beatae commodi perspiciatis, nostrum. Doloribus vero, fuga obcaecati repellat debitis ipsum voluptas reiciendis optio minus sed, suscipit sit, culpa doloremque numquam sequi tenetur perspiciatis a aperiam quam modi, quo!</p>
-    
-    </div>
+    <Wrapper>
+      <h3>Crypto Market Scanner</h3>
+      <List>
+        <li><SLink href='/'>Home</SLink></li>
+        <li><SLink href='/currency/btc'>BTC</SLink></li>
+        <li><SLink href='/currency/eth'>ETH</SLink></li>
+        <li><SLink href='/currency/bnb'>BNB</SLink></li>
+        <li><SLink href='/currency/usdt'>USDT</SLink></li>
+      </List>
+      <small>This is not financial advice.</small>
+    </Wrapper>
   )
 }
 

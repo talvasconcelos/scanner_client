@@ -1,6 +1,8 @@
 import { h, Component } from 'preact'
 import { Link } from 'preact-router/match'
 import styled, { css } from 'styled-components'
+
+import home_icon from './home.svg'
 //import style from './style'
 
 const Tabs = styled.header`
@@ -21,6 +23,7 @@ const Nav = styled.nav`
 `
 
 const S_Link = styled(Link)`
+	position: relative;
 	display: inline-block;
 	padding: 0 1em;
 	line-height: var(--navbar-heigth);
@@ -38,6 +41,20 @@ const S_Link = styled(Link)`
 		border-bottom: 2px solid var(--primary-color);
 
 	}
+	&::before{
+		display: ${props => props.badge ? 'block': 'none'};
+		content: attr(badge);
+		width: 1em;
+		height: 1em;
+		line-height: 1em;
+		background: var(--primary-color);
+		color: #fff;
+		border-radius: 50%;
+		padding: 3px;
+		position: absolute;
+		top: 10px;
+		right: 8px;
+	}
 `
 
 export default class Header extends Component {
@@ -48,9 +65,8 @@ export default class Header extends Component {
 					{tabs.map((cur, i) => {
 						let l = count[i]
 						return(
-							<S_Link activeClassName='activeTab' href={`/currency/${cur.toLowerCase()}`}>
+							<S_Link activeClassName='activeTab' href={`/currency/${cur.toLowerCase()}`} badge={l}>
 								{cur}
-								<span>{` ${l}`}</span>
 							</S_Link>
 						)
 					})}
