@@ -36,7 +36,7 @@ export default class Home extends Component {
 			<Wrapper>
 				<Header>
 					<div class='intro'>
-						<h1>Crypto Scanner</h1>
+						<h1>Coin Market Scanner</h1>
 						<h3>Binance crypto scanner.</h3>
 						<p>Get alerts from Binance on possible breaking out coins.</p>
 					</div>

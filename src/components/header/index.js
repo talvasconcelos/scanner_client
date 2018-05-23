@@ -2,8 +2,6 @@ import { h, Component } from 'preact'
 import { Link } from 'preact-router/match'
 import styled, { css } from 'styled-components'
 
-import home_icon from './home.svg'
-//import style from './style'
 
 const Tabs = styled.header`
 	position: fixed;
@@ -57,21 +55,21 @@ const S_Link = styled(Link)`
 	}
 `
 
-export default class Header extends Component {
-	render({count, tabs}) {
-		return (
-			<Tabs>
-				<Nav>
-					{tabs.map((cur, i) => {
-						let l = count[i]
-						return(
-							<S_Link activeClassName='activeTab' href={`/currency/${cur.toLowerCase()}`} badge={l}>
-								{cur}
-							</S_Link>
-						)
-					})}
-				</Nav>
-			</Tabs>
-		);
-	}
+const Header = ({count, tabs}) => {
+	return (
+		<Tabs>
+			<Nav>
+				{tabs.map((cur, i) => {
+					let l = count[i]
+					return(
+						<S_Link activeClassName='activeTab' href={`/currency/${cur.toLowerCase()}`} badge={l}>
+							{cur}
+						</S_Link>
+					)
+				})}
+			</Nav>
+		</Tabs>
+	)
 }
+
+export default  Header

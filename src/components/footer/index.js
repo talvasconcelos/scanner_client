@@ -33,7 +33,7 @@ const SLink = styled(Link)`
 const Footer = ({children, title}) => {
   return (
     <Wrapper>
-      <h3>Crypto Market Scanner</h3>
+      <h3>Coin Market Scanner</h3>
       <List>
         <li><SLink href='/'>Home</SLink></li>
         <li><SLink href='/currency/btc'>BTC</SLink></li>

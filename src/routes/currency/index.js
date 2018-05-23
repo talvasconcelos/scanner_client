@@ -23,8 +23,9 @@ const Currency = ({curr, pairs}) => {
 				let url = 'https://www.binance.com/trade.html?symbol='.concat(asset, '_', curr.toUpperCase())
 				let name = `${asset}/${curr.toUpperCase()}`
 				let data = cur.frontEnd.map(c => c.close)
-				return (<Item pair={cur} url={url} name={name} sparkData={data}></Item>)
+				return (<Item pair={cur} url={url} name={name} sparkData={data} />)
 			})}
+			{current_pairs.length != 0 && <Item manual name='Donations' sparkData={[]}/>}
 		</Wrapper>
 	)
 }

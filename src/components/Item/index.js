@@ -38,7 +38,7 @@ const CardBody = styled.main`
 `
 
 const CardTitle = styled.header`
-  grid-column: 1 / 2;
+  grid-column: ${props => props.manual ? '1 / 3' : '1 / 2'};
   grid-row: 1;
   color: var(--dark-color);
   font-weight: 500;
@@ -58,31 +58,41 @@ const CardFooter = styled.footer`
 `
 
 const CardGraph = styled.div`
-  grid-column: 1 / 2;
+  grid-column: ${props => props.manual ? '1 / 3' : '1 / 2'};
   grid-row: 2 / 3;
+  & p{
+    margin: 1em;
+    color: rgba(0,0,0,0.5);
+    font-size: 90%;
+  }
 `
 
 
-const Item = ({name, pair, sparkData, url}) => {
+const Item = ({name, pair, sparkData, url, ...props}) => {
   return (
     <Card href={url} target='_blank'>
       <CardWrapper href={url}>
-        <CardTitle>
-          <h4 class='card_title'>{name}</h4>
+        <CardTitle manual={props.manual}>
+          <h4 class='card_title'>{props.manual ? 'If you find this tool helpful and want to support my work, you can donate to:' : name} <span></span> </h4>
         </CardTitle>
-        <CardGraph>
+        <CardGraph manual={props.manual}>
+          {props.manual && <div>
+            <p>BTC: 3Fs51ccC854seUbbxR59k4Mph8BG64AC3Y</p>
+            <p>ETH: 0xb4E617BC39c7a796a06515DA166305b78aeAF345</p>
+            <p>LTC: LVFsWKJgMtY9F4kVXiZ9MD4xmNK3PaepLT</p>
+          </div>}
           <Sparkline strokeWidth='2px' strokeColor='var(--primary-color)' interpolate='cardinal' circleDiameter='0' data={sparkData.slice(-20)}/>
         </CardGraph>
         <CardBody>
-          <CardSpecs>
+          {!props.manual && <CardSpecs>
             <p>{`Closed @${pair.close}`}</p>
             <p>{`RSI: ${pair.rsi}`}</p>
             <p>{`MFI: ${pair.mfi}`}</p>
             <p>{`RVOL: ${pair.vol}`}</p>
-          </CardSpecs>
+          </CardSpecs>}
         </CardBody>
         <CardFooter>
-          <p>{moment(pair.timestamp).fromNow()}</p>
+          {!props.manual && <p>{moment(pair.timestamp).fromNow()}</p>}
         </CardFooter>
       </CardWrapper>
     </Card>
