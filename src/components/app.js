@@ -1,6 +1,7 @@
 import { h, Component } from 'preact'
 import { Router } from 'preact-router'
 import Sockette from 'sockette'
+import * as tf from '@tensorflow/tfjs'
 
 const WSURI = 'wss://market-scanner.herokuapp.com'
 
@@ -28,11 +29,13 @@ export default class App extends Component {
 	}
 
 	state = {
-    isPairs: false,
-    currency: ['BTC', 'ETH', 'BNB', 'USDT'],
-    history: [],
-    pairs: []
-  }
+		isPairs: false,
+		currency: ['BTC', 'ETH', 'BNB', 'USDT'],
+		history: [],
+		pairs: [],
+		model: null,
+		aiPairs: null
+	}
 
 	startWS() {
 		const ws = new Sockette(WSURI, {
@@ -48,13 +51,52 @@ export default class App extends Component {
 	}
 
 	pairsUpdate(pairs) {
-		if(Array.isArray(pairs)){
+		if (Array.isArray(pairs)) {
+			if (pairs[0].hasOwnProperty('candles')) { 
+				this.testAIpairs(pairs)
+				console.log(pairs)
+				return
+			}
 			this.setState({
 				isPairs: true,
-        history: [...this.state.pairs, ...this.state.history],
+				history: [...this.state.pairs, ...this.state.history],
 				pairs: this.separatePairs(pairs)
 			})
 		}
+	}
+
+	loadModel = () => {
+		const model = tf.loadModel('../assets/model/LSTM-trade-model.json')
+		model.then((m) => this.setState({
+			model: m,
+			loaded: true
+		}))
+	}
+
+	testAIpairs(pairs) {
+		const model = this.state.model
+		const predictions = []
+
+		pairs.map(async pair => {
+			const X = tf.tensor3d([pair.candles])
+			const P = model.predict(X).dataSync()
+			const action = tf.argMax(P).dataSync()[0]
+			if (action == 0) {
+				predictions.push({
+					pair: pair.pair,
+					action,
+					actionProb: P[action]
+				})
+			}
+			
+			X.dispose()
+			await tf.nextFrame()
+		})
+
+		this.setState({
+			aiPairs: this.separatePairs(predictions)
+		})
+
 	}
 
 	separatePairs(pairs) {
@@ -85,17 +127,18 @@ export default class App extends Component {
 
 	componentDidMount() {
 		this.startWS()
+		this.loadModel()
 		//this.pairsUpdate(cacheState)
 	}
 
-	render({}, {isPairs, pairs, currency}) {
+	render({}, {aiPairs, pairs, currency}) {
 		let count = Object.entries(pairs).map(c => c[1].length)
 		return (
 			<div id="app">
 				<Header tabs={currency} count={count} />
 				<Router onChange={this.handleRoute}>
-          <Home path='/'/>
-					<Currency path="/currency/:curr" pairs={pairs} />
+          			<Home path='/'/>
+					<Currency path="/currency/:curr" pairs={pairs} aiPairs={aiPairs} />
 				</Router>
 				<Footer />
 			</div>

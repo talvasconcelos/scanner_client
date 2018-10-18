@@ -83,11 +83,14 @@ const Item = ({name, pair, sparkData, url, ...props}) => {
           <Sparkline strokeWidth='2px' strokeColor='var(--primary-color)' interpolate='cardinal' circleDiameter='0' data={sparkData.slice(-20)}/>
         </CardGraph>
         <CardBody>
-          {!props.manual && <CardSpecs>
+          {!props.manual && !props.ai && <CardSpecs>
             <p>{`Closed @${pair.close}`}</p>
             <p>{`RSI: ${pair.rsi}`}</p>
             <p>{`MFI: ${pair.mfi}`}</p>
             <p>{`RVOL: ${pair.vol}`}</p>
+          </CardSpecs>}
+          {props.ai && <CardSpecs>
+            <p>{`AI action: ${pair.action}`}</p>
           </CardSpecs>}
         </CardBody>
         <CardFooter>
