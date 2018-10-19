@@ -8,7 +8,7 @@ const Card = styled.a`
   text-decoration: none;
   width: 100%;
   color: inherit;
-  background: #FFF;
+  background: ${props => props.ai ? '#e5f0fc' : '#FFF'};
   padding: 0.5em 0.5em;
   margin: 0.5em auto;
   box-shadow: 0 0.35em 1em 0.1em rgba(0,0,0,0.08);
@@ -69,10 +69,11 @@ const CardGraph = styled.div`
 
 const Item = ({name, pair, sparkData, url, ...props}) => {
   return (
-    <Card href={url} target='_blank'>
+    <Card href={url} target='_blank' ai={props.ai ? true : false}>
       <CardWrapper href={url}>
         <CardTitle manual={props.manual}>
           <h4 class='card_title'>{props.manual ? 'If you find this tool helpful and want to support my work, you can donate to:' : name} <span></span> </h4>
+          {props.ai && <p>AI Signal</p>}
         </CardTitle>
         <CardGraph manual={props.manual}>
           {props.manual && <div>
@@ -90,7 +91,8 @@ const Item = ({name, pair, sparkData, url, ...props}) => {
             <p>{`RVOL: ${pair.vol}`}</p>
           </CardSpecs>}
           {props.ai && <CardSpecs>
-            <p>{`AI action: ${pair.action}`}</p>
+            <p>{`AI action: Buy`}</p>
+            <p>{`AI probabilty: ${(pair.actionProb * 100).toFixed(0)}%`}</p>
           </CardSpecs>}
         </CardBody>
         <CardFooter>

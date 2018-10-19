@@ -1,4 +1,3 @@
-import { h, Component } from 'preact'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
@@ -10,29 +9,27 @@ const Wrapper = styled.div`
 	min-height: 100%;
 `
 
-//margin-top: calc(var(--navbar-heigth) + 0.5em);
-
 import Item from '../../components/Item'
 
 const Currency = ({curr, pairs, aiPairs}) => {
-	const current_pairs = pairs[curr]
-	const cur_aiPairs = aiPairs[curr]
+	const current_pairs = pairs && pairs[curr]
+	const cur_aiPairs = aiPairs && aiPairs[curr]
   return (
 		<Wrapper>
 			{cur_aiPairs && cur_aiPairs.map(cur => {
 				let asset = cur.pair.split(curr.toUpperCase())[0]
-				let url = 'https://www.binance.com/trade.html?symbol='.concat(asset, '_', curr.toUpperCase())
-				let name = `${asset}/${curr.toUpperCase()} | AI Prediction`
+				let url = 'https://www.binance.com/en/trade/pro/'.concat(asset, '_', curr.toUpperCase())
+				let name = `${asset}/${curr.toUpperCase()}`
 				return (<Item pair={cur} url={url} name={name} sparkData={[]} ai />)
 			})}
 			{current_pairs && current_pairs.map(cur => {
 				let asset = cur.pair.split(curr.toUpperCase())[0]
-				let url = 'https://www.binance.com/trade.html?symbol='.concat(asset, '_', curr.toUpperCase())
+				let url = 'https://www.binance.com/en/trade/pro/'.concat(asset, '_', curr.toUpperCase())
 				let name = `${asset}/${curr.toUpperCase()}`
 				let data = cur.frontEnd.map(c => c.close)
 				return (<Item pair={cur} url={url} name={name} sparkData={data} />)
 			})}
-			{current_pairs.length != 0 && <Item manual name='Donations' sparkData={[]}/>}
+			{current_pairs.length > 0 && <Item manual name='Donations' sparkData={[]}/>}
 		</Wrapper>
 	)
 }

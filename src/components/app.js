@@ -32,9 +32,9 @@ export default class App extends Component {
 		isPairs: false,
 		currency: ['BTC', 'ETH', 'BNB', 'USDT'],
 		history: [],
-		pairs: [],
-		model: null,
-		aiPairs: null
+		pairs: false,
+		model: false,
+		aiPairs: false
 	}
 
 	startWS() {
@@ -50,11 +50,14 @@ export default class App extends Component {
 		})
 	}
 
-	pairsUpdate(pairs) {
-		if (Array.isArray(pairs)) {
-			if (pairs[0].hasOwnProperty('candles')) { 
-				this.testAIpairs(pairs)
-				console.log(pairs)
+	pairsUpdate = async (pairs) => {
+		if (Array.isArray(pairs)) {			
+			if (pairs[0].hasOwnProperty('candles')) {
+				await this.loadModel()
+				const predictions = await this.testAIpairs(pairs)
+				this.setState({
+					aiPairs: predictions
+				})
 				return
 			}
 			this.setState({
@@ -65,69 +68,76 @@ export default class App extends Component {
 		}
 	}
 
-	loadModel = () => {
-		const model = tf.loadModel('../assets/model/LSTM-trade-model.json')
-		model.then((m) => this.setState({
-			model: m,
-			loaded: true
-		}))
+	loadModel = async () => {
+		await tf.loadModel('../assets/model/lstm_trades.json').then(m => {
+			this.setState({
+				model: m,
+				loaded: true
+			})
+		})
+		return
+		//await model.save('indexeddb://signals')		
 	}
 
-	testAIpairs(pairs) {
+	testAIpairs = async (pairs) => {
+		if (!this.state.loaded) {
+			return this.testAIpairs(pairs)
+		}
 		const model = this.state.model
 		const predictions = []
 
-		pairs.map(async pair => {
+		for(let i = 0; i < pairs.length; i++){
+			const pair = pairs[i]
 			const X = tf.tensor3d([pair.candles])
 			const P = model.predict(X).dataSync()
 			const action = tf.argMax(P).dataSync()[0]
-			if (action == 0) {
-				predictions.push({
-					pair: pair.pair,
-					action,
-					actionProb: P[action]
-				})
+
+			console.log(P)
+			if (action === 0 && P[action] > 0.75) {
+				delete pair.candles
+				pair.action = action
+				pair.actionProb = P[action]
+				pair.P = P
+				
+				predictions.push(pair)
 			}
-			
 			X.dispose()
 			await tf.nextFrame()
-		})
+		}
 
-		this.setState({
-			aiPairs: this.separatePairs(predictions)
-		})
-
+		console.log('Predict done!')
+		console.log(predictions)
+		return this.separatePairs(predictions.sort((a, b) => b.actionProb - a.actionProb))
 	}
 
 	separatePairs(pairs) {
-    let btc = []
-    let eth = []
-    let bnb = []
-    let usdt = []
-    pairs.map(p => {
-    	switch (true) {
-    		case (/(BTC)$/g).test(p.pair):
-    			btc.push(p)
-    			break;
-    		case (/(ETH)$/g).test(p.pair):
-    			eth.push(p)
-    			break;
-    		case (/(BNB)$/g).test(p.pair):
-    			bnb.push(p)
-    			break;
-    		case (/(USDT)$/g).test(p.pair):
-    			usdt.push(p)
-    			break;
-    		default:
-    			break;
-    	}
-    })
-    return {btc, eth, bnb, usdt}
-  }
+		let btc = []
+		let eth = []
+		let bnb = []
+		let usdt = []
+		pairs.map(p => {
+			switch (true) {
+				case (/(BTC)$/g).test(p.pair):
+					btc.push(p)
+					break;
+				case (/(ETH)$/g).test(p.pair):
+					eth.push(p)
+					break;
+				case (/(BNB)$/g).test(p.pair):
+					bnb.push(p)
+					break;
+				case (/(USDT)$/g).test(p.pair):
+					usdt.push(p)
+					break;
+				default:
+					break;
+			}
+		})
+		return {btc, eth, bnb, usdt}
+	}
 
 	componentDidMount() {
-		this.startWS()
-		this.loadModel()
+		this.startWS()		
 		//this.pairsUpdate(cacheState)
 	}
 
