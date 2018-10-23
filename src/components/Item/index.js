@@ -85,7 +85,7 @@ const Item = ({name, pair, sparkData, url, ...props}) => {
         </CardGraph>
         <CardBody>
           {!props.manual && !props.ai && <CardSpecs>
-            <p>{`Closed @${pair.close}`}</p>
+            <p>{`Closed @ ${pair.close}`}</p>
             <p>{`RSI: ${pair.rsi}`}</p>
             <p>{`MFI: ${pair.mfi}`}</p>
             <p>{`RVOL: ${pair.vol}`}</p>
@@ -93,6 +93,7 @@ const Item = ({name, pair, sparkData, url, ...props}) => {
           {props.ai && <CardSpecs>
             <p>{`AI action: Buy`}</p>
             <p>{`AI probabilty: ${(pair.actionProb * 100).toFixed(0)}%`}</p>
+            <p>{`Closed @ ${sparkData[sparkData.length - 1]}`}</p>
           </CardSpecs>}
         </CardBody>
         <CardFooter>

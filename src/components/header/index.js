@@ -55,7 +55,7 @@ const S_Link = styled(Link)`
 	}
 `
 
-const Header = ({count, tabs}) => {
+const Header = ({aiCount, count, tabs}) => {	
 	return (
 		<Tabs>
 			<Nav>

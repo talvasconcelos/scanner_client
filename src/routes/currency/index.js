@@ -11,16 +11,17 @@ const Wrapper = styled.div`
 
 import Item from '../../components/Item'
 
-const Currency = ({curr, pairs, aiPairs}) => {
+const Currency = ({aiOn, curr, pairs, aiPairs}) => {
 	const current_pairs = pairs && pairs[curr]
 	const cur_aiPairs = aiPairs && aiPairs[curr]
   return (
-		<Wrapper>
-			{cur_aiPairs && cur_aiPairs.map(cur => {
+		<Wrapper>					
+			{aiOn && cur_aiPairs && cur_aiPairs.map(cur => {
 				let asset = cur.pair.split(curr.toUpperCase())[0]
 				let url = 'https://www.binance.com/en/trade/pro/'.concat(asset, '_', curr.toUpperCase())
 				let name = `${asset}/${curr.toUpperCase()}`
-				return (<Item pair={cur} url={url} name={name} sparkData={[]} ai />)
+				let data = cur.frontEnd.map(c => c.close)
+				return (<Item pair={cur} url={url} name={name} sparkData={data} ai />)
 			})}
 			{current_pairs && current_pairs.map(cur => {
 				let asset = cur.pair.split(curr.toUpperCase())[0]
