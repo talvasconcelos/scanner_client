@@ -97,7 +97,7 @@ export default class App extends Component {
 
 	loadModel = () => {
 		tf.setBackend('cpu')
-		tf.loadModel('../assets/model/gru-model.json').then(m => {
+		tf.loadModel('../assets/model/lstm-model.json').then(m => {
 			console.log(m)
 			//await m.save('indexeddb://signals')
 			this.setState({
