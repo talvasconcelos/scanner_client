@@ -8,8 +8,8 @@ const WSURI = 'wss://market-scanner.herokuapp.com'
 
 import Header from './header'
 import Footer from './footer'
-import Home from '../routes/home'
-import Currency from '../routes/currency'
+import Home from 'async!../routes/home'
+import Currency from 'async!../routes/currency'
 // import Home from 'async!../routes/home';
 // import Profile from 'async!../routes/profile';
 
@@ -21,7 +21,7 @@ const FloatingB = styled.div `
 	width: 55px;
 	height: 55px;
 	border-radius: 50%;
-	background: var(--primary-color);
+	background: ${props => props.on ? 'var(--primary-color)' : 'grey'};
 	position: fixed;
 	bottom: 180px;
 	right: 30px;
@@ -33,7 +33,7 @@ const FloatingB = styled.div `
 
 const FloatText = styled.p `
 	text-align: center;
-	color: #fff;
+	color: ${props => props.on ? '#fff' : 'var(--light-color)'};
 	font-weight: 700;
 `
 
@@ -96,9 +96,10 @@ export default class App extends Component {
 	}
 
 	loadModel = () => {
-		tf.setBackend('cpu')
-		tf.loadModel('../assets/model/lstm-model.json').then(m => {
-			console.log(m)
+		// tf.setBackend('cpu')
+		tf.loadModel('http://tvasconcelos.eu/model/cms/model_x/model.json').then(m => {
+			// console.log(m)
+			m.summary()
 			//await m.save('indexeddb://signals')
 			this.setState({
 				model: m,
@@ -109,33 +110,64 @@ export default class App extends Component {
 		this.startWS()
 		return
 	}
-
+  
 	testAIpairs = async (pairs) => {
 		const model = this.state.model
+		// console.log('Weights:', model.getWeights())
 		const predictions = []
-		
-		for(let i = 0; i < pairs.length; i++){
-			const pair = pairs[i]
+
+		pairs.map(async pair => {
+			// pair.candles = pair.annState
+
 			const X = tf.tensor3d([pair.candles])
 			const P = model.predict(X).dataSync()
 			const action = tf.argMax(P).dataSync()[0]
-			if (action === 0 && P[action] > 0.98) {
-				delete pair.candles
-				pair.action = action
-				pair.actionProb = P[action]
-				pair.sell = P[1]
-				
-				predictions.push(pair)
+			if (action === 2) {
+				return
 			}
+			if (P[action] < 1/*Math.round(P[action] * 1000) / 1000 < 1*/) {
+				return
+			}
+			// console.log(P, action)
+			delete pair.candles
+			// delete pair.annState
+			pair.action = action
+			pair.actionProb = P[action]
+			pair.compare = action === 0 ? P[1] : P[0]
+			if(pair.compare > P[2]){ return }
+			// console.log(pair)
+			predictions.push(pair)
+
 			X.dispose()
 			await tf.nextFrame()
-		}
+		})
+		
+		// for(let i = 0; i < pairs.length; i++){
+		// 	const pair = pairs[i]
+		// 	pair.candles = pair.annState
+		// 	const X = tf.tensor3d([pair.candles])
+		// 	const P = model.predict(X).dataSync()
+		// 	const action = tf.argMax(P).dataSync()[0]
+		// 	console.log(P)
+		// 	if(action === 2) {return}
+		// 	if(P[action] < 1) {return}
+			
+		// 	delete pair.candles
+		// 	pair.action = action
+		// 	pair.actionProb = P[action]
+		// 	pair.compare = action === 0 ? P[1] : P[0]
+		// 	console.log(pair)
+		// 	predictions.push(pair)
+
+		// 	X.dispose()
+		// 	await tf.nextFrame()
+		// }
 
 		console.log('Predict done!')
 		// console.log(predictions)
 		this.setState({
 			aiPairs: this.separatePairs(predictions.sort((a, b) => {
-				return b.actionProb - a.actionProb || a.sell - b.sell
+				return b.actionProb - a.actionProb || a.compare - b.compare
 			}))
 		})
 		return
@@ -182,7 +214,7 @@ export default class App extends Component {
           			<Home path='/'/>
 					<Currency path="/currency/:curr" pairs={pairs} aiPairs={aiPairs} aiOn={ai} />
 				</Router>
-				<FloatingB onClick={this.toggleAI}>
+				<FloatingB onClick={this.toggleAI} on={ai}>
 					<FloatText>AI</FloatText>
 				</FloatingB>	
 				<Footer />

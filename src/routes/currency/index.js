@@ -14,8 +14,9 @@ import Item from '../../components/Item'
 const Currency = ({aiOn, curr, pairs, aiPairs}) => {
 	const current_pairs = pairs && pairs[curr]
 	const cur_aiPairs = aiPairs && aiPairs[curr]
-  return (
-		<Wrapper>					
+  	return (
+		<Wrapper>
+			{aiOn && !cur_aiPairs && <p>Getting AI predictions...</p>}				
 			{aiOn && cur_aiPairs && cur_aiPairs.map(cur => {
 				let asset = cur.pair.split(curr.toUpperCase())[0]
 				let url = 'https://www.binance.com/en/trade/pro/'.concat(asset, '_', curr.toUpperCase())
