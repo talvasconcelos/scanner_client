@@ -8,7 +8,7 @@ const Card = styled.a`
   text-decoration: none;
   width: 100%;
   color: inherit;
-  background: ${props => props.ai ? '#e5f0fc' : '#FFF'};
+  background: ${props => props.ai ? props.side ? '#fce5f0' : '#f0fce5' : '#FFF'};
   padding: 0.5em 0.5em;
   margin: 0.5em auto;
   box-shadow: 0 0.35em 1em 0.1em rgba(0,0,0,0.08);
@@ -69,18 +69,20 @@ const CardGraph = styled.div`
 
 const Item = ({name, pair, sparkData, url, ...props}) => {
   return (
-    <Card href={url} target='_blank' ai={props.ai ? true : false}>
+    <Card href={url} target='_blank' ai={props.ai ? true : false} side={props.ai && pair.action}>
       <CardWrapper href={url}>
         <CardTitle manual={props.manual}>
           <h4 class='card_title'>{props.manual ? 'If you find this tool helpful and want to support my work, you can donate to:' : name} <span></span> </h4>
           {props.ai && <p>AI Signal</p>}
         </CardTitle>
         <CardGraph manual={props.manual}>
-          {props.manual && <div>
-            <p>BTC: 3Fs51ccC854seUbbxR59k4Mph8BG64AC3Y</p>
-            <p>ETH: 0xb4E617BC39c7a796a06515DA166305b78aeAF345</p>
-            <p>LTC: LVFsWKJgMtY9F4kVXiZ9MD4xmNK3PaepLT</p>
-          </div>}
+          {props.manual && <form method="POST" action="https://btcpayjungle.com/api/v1/invoices">
+              <input type="hidden" name="storeId" value="J4d3u63nPu5cqcip7fUztQVRTc96a1N7qyDQAnZ9xE3P" />
+              <input type="hidden" name="price" value="10" />
+              <input type="hidden" name="currency" value="EUR" />
+              <input type="hidden" name="notifyEmail" value="talvasconcelos@gmail.com" />
+              <input type="image" src="https://btcpayjungle.com/img/paybutton/pay.png" name="submit" style="width:209px" alt="Pay with BtcPay, Self-Hosted Bitcoin Payment Processor" />
+          </form>}
           <Sparkline strokeWidth='2px' strokeColor='var(--primary-color)' interpolate='cardinal' circleDiameter='0' data={sparkData.slice(-20)}/>
         </CardGraph>
         <CardBody>
@@ -91,9 +93,10 @@ const Item = ({name, pair, sparkData, url, ...props}) => {
             <p>{`RVOL: ${pair.vol}`}</p>
           </CardSpecs>}
           {props.ai && <CardSpecs>
+            <p>{`AI probabilty: ${(pair.actionProb * 100).toFixed(2)}%`}</p>
             <p>{`AI action: ${pair.action === 0 ? 'Buy' : 'Sell'}`}</p>
-            <p>{`AI probabilty: ${(pair.actionProb * 100).toFixed(0)}%`}</p>
             <p>{`Last 1h Closed @ ${sparkData[sparkData.length - 1]}`}</p>
+            {pair.action === 0 && <p>{`Min. TP: ${(sparkData[sparkData.length - 1] * 1.03).toFixed(8)}`}</p>}
           </CardSpecs>}
         </CardBody>
         <CardFooter>

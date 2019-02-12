@@ -97,7 +97,7 @@ export default class App extends Component {
 
 	loadModel = () => {
 		// tf.setBackend('cpu')
-		tf.loadModel('http://tvasconcelos.eu/model/cms/model_x/model.json').then(m => {
+		tf.loadModel('../assets/model/model/model.json').then(m => {
 			// console.log(m)
 			m.summary()
 			//await m.save('indexeddb://signals')
@@ -122,23 +122,23 @@ export default class App extends Component {
 			const X = tf.tensor3d([pair.candles])
 			const P = model.predict(X).dataSync()
 			const action = tf.argMax(P).dataSync()[0]
+			X.dispose()
 			if (action === 2) {
 				return
 			}
-			if (P[action] < 1/*Math.round(P[action] * 1000) / 1000 < 1*/) {
+			if (P[action] < 0.98) {
 				return
 			}
-			// console.log(P, action)
+			// console.log(JSON.stringify(pair.candles))
+			
 			delete pair.candles
 			// delete pair.annState
 			pair.action = action
 			pair.actionProb = P[action]
 			pair.compare = action === 0 ? P[1] : P[0]
 			if(pair.compare > P[2]){ return }
-			// console.log(pair)
 			predictions.push(pair)
 
-			X.dispose()
 			await tf.nextFrame()
 		})
 		
@@ -164,7 +164,7 @@ export default class App extends Component {
 		// }
 
 		console.log('Predict done!')
-		// console.log(predictions)
+		console.log(predictions)
 		this.setState({
 			aiPairs: this.separatePairs(predictions.sort((a, b) => {
 				return b.actionProb - a.actionProb || a.compare - b.compare
@@ -183,13 +183,13 @@ export default class App extends Component {
 				case (/(BTC)$/g).test(p.pair):
 					btc.push(p)
 					break;
-				case (/(ETH)$/g).test(p.pair):
+					case (/((ETH|XRP))$/g).test(p.pair):
 					eth.push(p)
 					break;
 				case (/(BNB)$/g).test(p.pair):
 					bnb.push(p)
 					break;
-				case (/(USDT)$/g).test(p.pair):
+					case (/((USD.|TUSD|USD|PAX))$/).test(p.pair):
 					usdt.push(p)
 					break;
 				default:
