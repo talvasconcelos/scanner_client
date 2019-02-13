@@ -99,7 +99,7 @@ export default class App extends Component {
 		// tf.setBackend('cpu')
 		tf.loadModel('../assets/model/model/model.json').then(m => {
 			// console.log(m)
-			m.summary()
+			// m.summary()
 			//await m.save('indexeddb://signals')
 			this.setState({
 				model: m,
@@ -126,7 +126,7 @@ export default class App extends Component {
 			if (action === 2) {
 				return
 			}
-			if (P[action] < 0.98) {
+			if (P[action] < 0.99) {
 				return
 			}
 			// console.log(JSON.stringify(pair.candles))
