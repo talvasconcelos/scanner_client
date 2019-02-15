@@ -28,3 +28,14 @@ html, body {
 #app {
 	height: 100%;
 }
+
+a {
+	text-decoration: none;
+	font-weight: 500;
+}
+
+.centered {
+	display: flex;
+	justify-content: center;
+	margin: 2em 0;
+}

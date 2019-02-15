@@ -118,8 +118,8 @@ export default class App extends Component {
 
 		pairs.map(async pair => {
 			// pair.candles = pair.annState
-
 			const X = tf.tensor3d([pair.candles])
+			console.log(pair.candles)
 			const P = model.predict(X).dataSync()
 			const action = tf.argMax(P).dataSync()[0]
 			X.dispose()
@@ -131,7 +131,7 @@ export default class App extends Component {
 			}
 			// console.log(JSON.stringify(pair.candles))
 			
-			delete pair.candles
+			// delete pair.candles
 			// delete pair.annState
 			pair.action = action
 			pair.actionProb = P[action]

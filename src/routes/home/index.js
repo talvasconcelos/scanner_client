@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 	min-height: 100%;
 `
 
-const Header = styled.div`
+const Header = styled.header`
 	display: flex;
 	align-items: center;
 	flex-flow: column;
@@ -38,13 +38,15 @@ export default class Home extends Component {
 					<div class='intro'>
 						<h1>Coin Market Scanner</h1>
 						<h3>Binance crypto scanner.</h3>
-						<p>Get alerts from Binance on possible breaking out coins.</p>
+						<p>Get alerts for Binance on possible breaking out coins.</p>
 					</div>
 				</Header>
 				<div>
 					<Blurb title='Technical Details' columns='2'>
-						<p>The scanner reads candles from Binance at 15 minutes intervals. It takes the information and runs some technical indicators like Exponential Moving Average, Relative Strength Index, Money Flow Index, Relative Volume, etc... From there it checks, based on technical analysis (TA), if there may be a potential breakout for that coin. It runs the TA on every coin on Binance, every 15 minutes, alerting the ones with good potential!</p>
-						<p><strong>I'm working on an AI model to make these predictions. The Scanner will be updated as soon as it proves to be reliable!</strong></p>
+						<p>Coin Market Scanner uses Artificial Inteligence to predict possible coin breakouts. The target profit is 3.5-5% in the next 12 hours. The AI Signals have a green or red color for buy and sell signals. There's also displayed the AI probability that the asset will make a move. I included a Take Profit target just for reference.</p>
+
+						<p>The scanner reads candles from Binance at 60 minutes intervals. It takes the information and runs technical indicators like Exponential Moving Average, Relative Strength Index, Money Flow Index, Relative Volume, etc... From there it checks, based on technical analysis (TA), if there may be a potential breakout for that coin. It runs the TA on every coin on Binance, every 15 minutes, alerting the ones with good potential!</p>
+						<p>If you want to trade with these signals in an automated way, you can find me at <a href="https://www.cryptohopper.com/signaller?signaller_id=224">Crypto Hopper</a>. If you subscribe to the signals you can use them on your hoppers. I use a custom bot to trade the signals. I may make it public in the future.</p>
 					</Blurb>
 					<Blurb title='How to read/trade' columns='2'>
 						<p>What do the alerts mean? If you're familiar with TA the acronyms RSI, MFI, MACD, etc, are nothing new to you. If you don't know what they are you should probabily learn them first before atempting to trade.</p>
@@ -57,11 +59,16 @@ export default class Home extends Component {
 						<p><strong>RVOL: </strong>The Relative Volume compares the current volume to the average of the specified period of time and is displayed as a ratio. So for example, a stock trading 5 1/2 times its normal volume would have a Relative Volume display of 5.5.</p>
 					</Blurb>
 					<Blurb title='Donations'>
-						<p>If you find the scanner useful and want to support my work and further developments, you can do so using the bellow adresses:</p>
-						<p><strong>BTC: </strong><small>3Fs51ccC854seUbbxR59k4Mph8BG64AC3Y</small></p>
-						<p><strong>ETH: </strong><small>0xb4E617BC39c7a796a06515DA166305b78aeAF345</small></p>
-						<p><strong>LTC: </strong><small>LVFsWKJgMtY9F4kVXiZ9MD4xmNK3PaepLT</small></p>
-						<p><strong>Thank you for your support! </strong></p>
+						<p>If you find the scanner useful and want to support my work and further developments, or just want to buy me a beer:</p>			
+						<section class='centered'>
+							<form method="POST" action="https://btcpayjungle.com/api/v1/invoices">
+								<input type="hidden" name="storeId" value="J4d3u63nPu5cqcip7fUztQVRTc96a1N7qyDQAnZ9xE3P" />
+								<input type="hidden" name="price" value="10" />
+								<input type="hidden" name="currency" value="EUR" />
+								<input type="hidden" name="notifyEmail" value="talvasconcelos@gmail.com" />
+								<input type="image" src="https://btcpayjungle.com/img/paybutton/pay.png" name="submit" style="width:209px" alt="Pay with BtcPay, Self-Hosted Bitcoin Payment Processor" />
+							</form>
+						</section>
 					</Blurb>
 				</div>
 			</Wrapper>
