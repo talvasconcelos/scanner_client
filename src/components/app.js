@@ -83,7 +83,7 @@ export default class App extends Component {
 
 	pairsUpdate = (pairs) => {
 		if (Array.isArray(pairs)) {
-			if (pairs[0].hasOwnProperty('candles')) {				
+			if (pairs[0].hasOwnProperty('AI')) {				
 				this.state.loaded && Promise.resolve(this.testAIpairs(pairs))
 				return
 			}
@@ -99,7 +99,7 @@ export default class App extends Component {
 		// tf.setBackend('cpu')
 		tf.loadModel('../assets/model/model/model.json').then(m => {
 			// console.log(m)
-			// m.summary()
+			m.summary()
 			//await m.save('indexeddb://signals')
 			this.setState({
 				model: m,
@@ -118,19 +118,25 @@ export default class App extends Component {
 
 		pairs.map(async pair => {
 			// pair.candles = pair.annState
-			const X = tf.tensor3d([pair.candles])
-			console.log(pair.candles)
-			const P = model.predict(X).dataSync()
-			const action = tf.argMax(P).dataSync()[0]
-			X.dispose()
-			if (action === 2) {
-				return
-			}
-			if (P[action] < 0.99) {
-				return
-			}
-			// console.log(JSON.stringify(pair.candles))
+			if(!pair.candles) {return}
+			const sanitize = pair.candles
+				.flat()
+				.some(v => isNaN(v))
+			sanitize && console.log(pair)
 			
+			let action = 2
+			const X = tf.tensor3d([pair.candles])
+			const P = model.predict(X).dataSync()
+			// if(pair.pair === 'DENTBTC' || pair.pair === 'FUNBTC'){
+			// 	console.log(pair)
+			// 	console.log(P)
+			// }
+			// console.log(P, pair.pair)
+			action = tf.argMax(P).dataSync()[0]
+			X.dispose()
+			if (action === 2 || P[action] < 0.99) {
+				return
+			}
 			// delete pair.candles
 			// delete pair.annState
 			pair.action = action
