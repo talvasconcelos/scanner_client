@@ -55,12 +55,12 @@ const S_Link = styled(Link)`
 	}
 `
 
-const Header = ({count, tabs}) => {
+const Header = ({aicount, count, tabs}) => {	
 	return (
 		<Tabs>
 			<Nav>
 				{tabs.map((cur, i) => {
-					let l = count[i]
+					let l = count[i] + (aicount.length > 0 ? aicount[i] : 0)
 					return(
 						<S_Link activeClassName='activeTab' href={`/currency/${cur.toLowerCase()}`} badge={l}>
 							{cur}
