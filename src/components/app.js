@@ -97,7 +97,7 @@ export default class App extends Component {
 
 	loadModel = () => {
 		// tf.setBackend('cpu')
-		tf.loadModel('../assets/model/model/model.json').then(m => {
+		tf.loadLayersModel('../assets/model/model/model.json').then(m => {
 			// console.log(m)
 			m.summary()
 			//await m.save('indexeddb://signals')
@@ -118,11 +118,12 @@ export default class App extends Component {
 
 		pairs.map(async pair => {
 			// pair.candles = pair.annState
-			if(!pair.candles) {return}
-			const sanitize = pair.candles
-				.flat()
-				.some(v => isNaN(v))
-			sanitize && console.log(pair)
+			if(!pair.testModel) {return}
+			pair.candles = pair.testModel
+			// const sanitize = pair.candles
+			// 	.flat()
+			// 	.some(v => isNaN(v))
+			// sanitize && console.log(pair)
 			
 			let action = 2
 			const X = tf.tensor3d([pair.candles])
