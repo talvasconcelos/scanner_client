@@ -8,7 +8,7 @@ const Card = styled.a`
   text-decoration: none;
   width: 100%;
   color: inherit;
-  background: ${props => props.ai ? props.side ? '#fce5f0' : '#f0fce5' : '#FFF'};
+  background: ${props => props.ai ? '#dfffc1' : '#FFF'};
   padding: 0.5em 0.5em;
   margin: 0.5em auto;
   box-shadow: 0 0.35em 1em 0.1em rgba(0,0,0,0.08);
@@ -69,7 +69,7 @@ const CardGraph = styled.div`
 
 const Item = ({name, pair, sparkData, url, ...props}) => {
   return (
-    <Card href={url} target='_blank' ai={props.ai ? true : false} side={props.ai && pair.action}>
+    <Card href={url} target='_blank' ai={props.ai ? true : false}>
       <CardWrapper href={url}>
         <CardTitle manual={props.manual}>
           <h4 class='card_title'>{props.manual ? 'If you find this tool helpful and want to support my work, you can donate to:' : name} <span></span> </h4>
@@ -96,7 +96,7 @@ const Item = ({name, pair, sparkData, url, ...props}) => {
           </CardSpecs>}
           {props.ai && <CardSpecs>
             <p>{`AI probabilty: ${(pair.actionProb * 100).toFixed(2)}%`}</p>
-            <p>{`AI action: ${pair.action === 0 ? 'Buy' : 'Sell'}`}</p>
+            <p>{`AI action: Buy`}</p>
             <p>{`Last 1h Closed @ ${sparkData[sparkData.length - 1]}`}</p>
             {pair.action === 0 && <p>{`Min. TP: ${(sparkData[sparkData.length - 1] * 1.03).toFixed(8)}`}</p>}
           </CardSpecs>}
