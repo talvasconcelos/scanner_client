@@ -125,7 +125,7 @@ export default class App extends Component {
 			// 	.some(v => isNaN(v))
 			// sanitize && console.log(pair)
 			
-			let action = 2
+			let action = 1
 			const X = tf.tensor3d([pair.candles])
 			const P = model.predict(X).dataSync()
 			// if(pair.pair === 'DENTBTC' || pair.pair === 'FUNBTC'){
@@ -135,15 +135,15 @@ export default class App extends Component {
 			// console.log(P, pair.pair)
 			action = tf.argMax(P).dataSync()[0]
 			X.dispose()
-			if (action === 2 || P[action] < 0.99) {
+			if (action === 1 || P[action] < 0.999) {
 				return
 			}
 			// delete pair.candles
 			// delete pair.annState
 			pair.action = action
 			pair.actionProb = P[action]
-			pair.compare = action === 0 ? P[1] : P[0]
-			if(pair.compare > P[2]){ return }
+			// pair.compare = action === 0 ? P[1] : P[0]
+			// if(pair.compare > P[2]){ return }
 			predictions.push(pair)
 
 			await tf.nextFrame()
@@ -174,7 +174,7 @@ export default class App extends Component {
 		console.log(predictions)
 		this.setState({
 			aiPairs: this.separatePairs(predictions.sort((a, b) => {
-				return b.actionProb - a.actionProb || a.compare - b.compare
+				return b.actionProb - a.actionProb
 			}))
 		})
 		return
