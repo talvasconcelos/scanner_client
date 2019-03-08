@@ -118,8 +118,8 @@ export default class App extends Component {
 
 		pairs.map(async pair => {
 			// pair.candles = pair.annState
-			if(!pair.testModel) {return}
-			pair.candles = pair.testModel
+			if(!pair.candles) {return}
+			// pair.candles = pair.testModel
 			// const sanitize = pair.candles
 			// 	.flat()
 			// 	.some(v => isNaN(v))
