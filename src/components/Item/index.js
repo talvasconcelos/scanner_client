@@ -68,16 +68,6 @@ const CardGraph = styled.div`
   }
 `
 
-const PriceValue = styled.input`
-  display: block;
-  height: 2em;
-  padding: 1em;
-  margin-bottom: 2em;
-  font-weight: bold;
-  text-align: center;
-`
-
-
 const Item = ({name, pair, sparkData, url, ...props}) => {
   return (
     <Card href={url} target='_blank' ai={props.ai ? true : false}>

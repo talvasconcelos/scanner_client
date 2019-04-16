@@ -61,13 +61,7 @@ export default class Home extends Component {
 					<Blurb title='Donations'>
 						<p>If you find the scanner useful and want to support my work and further developments, or just want to buy me a beer:</p>			
 						<section class='centered'>
-							<form method="POST" action="https://btcpayjungle.com/api/v1/invoices">
-								<input type="hidden" name="storeId" value="J4d3u63nPu5cqcip7fUztQVRTc96a1N7qyDQAnZ9xE3P" />
-								<input type="hidden" name="price" value="5" />
-								<input type="hidden" name="currency" value="EUR" />
-								<input type="hidden" name="notifyEmail" value="talvasconcelos@gmail.com" />
-								<input type="image" src="https://btcpayjungle.com/img/paybutton/pay.png" name="submit" style="width:209px" alt="Pay with BtcPay, Self-Hosted Bitcoin Payment Processor" />
-							</form>
+							<Donation />
 						</section>
 					</Blurb>
 				</div>
