@@ -56,7 +56,8 @@ export default class App extends Component {
 		pairs: false,
 		model: false,
 		aiPairs: false,
-		ai: true
+		ai: true,
+		donationValue: 5
 	}
 
 	startWS() {
@@ -211,7 +212,7 @@ export default class App extends Component {
 		//this.pairsUpdate(cacheState)
 	}
 
-	render({}, {ai, aiPairs, pairs, currency}) {
+	render({}, {ai, aiPairs, pairs, currency, donationValue}) {
 		let count = Object.entries(pairs).map(c => c[1].length)
 		let aiCount = Object.entries(aiPairs).map(c => c[1].length)
 		return (
@@ -219,7 +220,7 @@ export default class App extends Component {
 				<Header tabs={currency} count={count} aicount={aiCount} />
 				<Router onChange={this.handleRoute}>
           			<Home path='/'/>
-					<Currency path="/currency/:curr" pairs={pairs} aiPairs={aiPairs} aiOn={ai} />
+					<Currency path="/currency/:curr" pairs={pairs} aiPairs={aiPairs} aiOn={ai} donate={donationValue} />
 				</Router>
 				<FloatingB onClick={this.toggleAI} on={ai}>
 					<FloatText>AI</FloatText>

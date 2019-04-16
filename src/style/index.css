@@ -39,3 +39,31 @@ a {
 	justify-content: center;
 	margin: 2em 0;
 }
+
+.btcpay {
+	display: flex;
+	flex-flow: column;
+}
+
+.input button {
+	width: 2em;
+	font-size: 1.2em;
+	padding: 0.5em;
+	border: none;
+	border-radius: 3px;
+	background: var(--primary-color);
+	color: #fff;
+}
+
+.input input {
+	font-size: 1.2em;
+	width: 100px;
+	text-align: center;
+	padding: 0.5em;
+	margin: 0.5em;
+}
+
+.input, .form {
+	margin: 0 auto;
+	margin-top: 1em;
+}

@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import moment from 'moment'
 import Sparkline from 'react-sparkline'
 
+import Donation from '../donations'
+
 const Card = styled.a`
   position: relative;
   display: block;
@@ -66,24 +68,27 @@ const CardGraph = styled.div`
   }
 `
 
+const PriceValue = styled.input`
+  display: block;
+  height: 2em;
+  padding: 1em;
+  margin-bottom: 2em;
+  font-weight: bold;
+  text-align: center;
+`
+
 
 const Item = ({name, pair, sparkData, url, ...props}) => {
   return (
     <Card href={url} target='_blank' ai={props.ai ? true : false}>
       <CardWrapper href={url}>
         <CardTitle manual={props.manual}>
-          <h4 class='card_title'>{props.manual ? 'If you find this tool helpful and want to support my work, you can donate to:' : name} <span></span> </h4>
+          <h4 class='card_title'>{props.manual ? 'If you find this tool helpful and want to support my work...' : name}</h4>
           {props.ai && <p>AI Signal</p>}
         </CardTitle>
         <CardGraph manual={props.manual}>
           {props.manual && <section class='centered'>
-							<form method="POST" action="https://btcpayjungle.com/api/v1/invoices">
-								<input type="hidden" name="storeId" value="J4d3u63nPu5cqcip7fUztQVRTc96a1N7qyDQAnZ9xE3P" />
-								<input type="hidden" name="price" value="5" />
-								<input type="hidden" name="currency" value="EUR" />
-								<input type="hidden" name="notifyEmail" value="talvasconcelos@gmail.com" />
-								<input type="image" src="https://btcpayjungle.com/img/paybutton/pay.png" name="submit" style="width:209px" alt="Pay with BtcPay, Self-Hosted Bitcoin Payment Processor" />
-							</form>
+            <Donation />
 						</section>}
           <Sparkline strokeWidth='2px' strokeColor='var(--primary-color)' interpolate='cardinal' circleDiameter='0' data={sparkData.slice(-20)}/>
         </CardGraph>

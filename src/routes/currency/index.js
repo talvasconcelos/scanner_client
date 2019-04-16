@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 
 import Item from '../../components/Item'
 
-const Currency = ({aiOn, curr, pairs, aiPairs}) => {
+const Currency = ({aiOn, curr, pairs, aiPairs, donate}) => {
 	const current_pairs = pairs && pairs[curr]
 	const cur_aiPairs = aiPairs && aiPairs[curr]
   	return (
@@ -36,7 +36,7 @@ const Currency = ({aiOn, curr, pairs, aiPairs}) => {
 				let data = cur.frontEnd.map(c => c.close)
 				return (<Item pair={cur} url={url} name={name} sparkData={data} />)
 			})}
-			{current_pairs.length > 0 && <Item manual name='Donations' sparkData={[]}/>}
+			{current_pairs.length > 0 && <Item manual name='Donations' sparkData={[]} donate={donate} />}
 		</Wrapper>
 	)
 }
