@@ -2,6 +2,7 @@ import { h, Component } from 'preact'
 import styled from 'styled-components'
 
 import Blurb from '../../components/blurb'
+import Donation from '../../components/donations'
 
 const Wrapper = styled.div`
 	position: relative;
