@@ -8,6 +8,7 @@ const WSURI = 'wss://market-scanner.herokuapp.com'
 
 import Header from './header'
 import Footer from './footer'
+import Modal from './modal'
 import Home from 'async!../routes/home'
 import Currency from 'async!../routes/currency'
 // import Home from 'async!../routes/home';
@@ -57,7 +58,12 @@ export default class App extends Component {
 		model: false,
 		aiPairs: false,
 		ai: true,
-		donationValue: 5
+		donationValue: 2,
+		donationModalShow: Math.random() < 0.2 ? 1 : 0
+	}
+
+	dismissModal = () => {
+		return this.setState({donationModalShow: 0})
 	}
 
 	startWS() {
@@ -208,9 +214,10 @@ export default class App extends Component {
 	}
 
 	componentDidMount() {
-		this.loadModel()		
+		this.loadModel()
 		//this.pairsUpdate(cacheState)
 	}
+
 
 	render({}, {ai, aiPairs, pairs, currency, donationValue}) {
 		let count = Object.entries(pairs).map(c => c[1].length)
@@ -224,7 +231,8 @@ export default class App extends Component {
 				</Router>
 				<FloatingB onClick={this.toggleAI} on={ai}>
 					<FloatText>AI</FloatText>
-				</FloatingB>	
+				</FloatingB>
+				{this.state.donationModalShow && <Modal dismiss={this.dismissModal}/>}
 				<Footer />
 			</div>
 		)

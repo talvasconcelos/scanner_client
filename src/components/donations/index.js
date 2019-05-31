@@ -2,7 +2,7 @@ import { h, Component } from 'preact'
 
 class Donation extends Component {
 	state = {
-		value: 5
+		value: 2
     }
     
     doIncrement = () => {
