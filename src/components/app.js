@@ -232,7 +232,7 @@ export default class App extends Component {
 				<FloatingB onClick={this.toggleAI} on={ai}>
 					<FloatText>AI</FloatText>
 				</FloatingB>
-				{this.state.donationModalShow && <Modal dismiss={this.dismissModal}/>}
+				{this.state.donationModalShow ? <Modal dismiss={this.dismissModal}/> : null}
 				<Footer />
 			</div>
 		)
