@@ -102,7 +102,8 @@ a {
 	padding: 20px;
 	box-shadow: 0 1px 5px rgba(0,0,0,0.7);
 	border-radius: 4px;
-	width: 520px; /* This just a default width */
+	width: 90%; /* This just a default width */
+	max-width: 520px;
   }
   
   .modal .modal_content > h2 {
