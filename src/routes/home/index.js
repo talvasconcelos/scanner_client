@@ -43,11 +43,18 @@ export default class Home extends Component {
 					</div>
 				</Header>
 				<div>
+					<Blurb title='New trading bot' columns='1'>
+						<p><strong>I'm releasing, as an early Alpha, the bot I'm using to trade the Coin Market Signal's signals.</strong></p>
+						<p>As mentioned, this is an Alpha version of the bot. Use it, if you want, with extreme care. Don't leave it unattended for long periods of time. I recommend opening a test account on Binance, send some BTC to that account and try it out.</p>
+						<p>The CMS Bot is open source and it's available at Github, <a href="https://github.com/talvasconcelos/cms-bot" target="_blank">CMS Bot</a>. You'll need NodeJS in order to run the bot. If you find an issue, report it in the issues on the project repository, or if you want, open a Pull Request with your fixes.</p>
+						<p>You can find a simple, and very optimistic, calculator I did to check how much to expect from microtrading or compound trading <a href="https://observablehq.com/@talvasconcelos/coin-market-scanner-calculator" target="_blank">here</a>.</p>
+						<p><strong>The bot has some bugs, use it with extreme care.</strong></p>
+					</Blurb>
 					<Blurb title='Technical Details' columns='2'>
 						<p>Coin Market Scanner uses Artificial Inteligence to predict possible coin breakouts. The target profit is 3.5-5% in the next 12 hours. The AI Signals have a green or red color for buy and sell signals. There's also displayed the AI probability that the asset will make a move. I included a Take Profit target just for reference.</p>
 
 						<p>The scanner reads candles from Binance at 60 minutes intervals. It takes the information and runs technical indicators like Exponential Moving Average, Relative Strength Index, Money Flow Index, Relative Volume, etc... From there it checks, based on technical analysis (TA), if there may be a potential breakout for that coin. It runs the TA on every coin on Binance, every 15 minutes, alerting the ones with good potential!</p>
-						<p>If you want to trade with these signals in an automated way, you can find me at <a href="https://www.cryptohopper.com/signaller?signaller_id=224">Crypto Hopper</a>. If you subscribe to the signals you can use them on your hoppers. I use a custom bot to trade the signals. I may make it public in the future.</p>
+						<p>If you want to trade with these signals in an automated way, you can find me at <a href="https://www.cryptohopper.com/signaller?signaller_id=224" target="_blank">Crypto Hopper</a>. If you subscribe to the signals you can use them on your hoppers. I use a custom bot to trade the signals. I may make it public in the future.</p>
 					</Blurb>
 					<Blurb title='How to read/trade' columns='2'>
 						<p>What do the alerts mean? If you're familiar with TA the acronyms RSI, MFI, MACD, etc, are nothing new to you. If you don't know what they are you should probabily learn them first before atempting to trade.</p>
